@@ -86,7 +86,7 @@ install_it() { "$TIZEN" install -n CleanHome.wgt -s "$TARGET" -- "$WORK/CleanHom
 if ! install_it; then
   # The TV sometimes refuses to replace an existing copy, so remove it and retry.
   echo; echo "Removing the old copy from the TV, then trying again..."
-  "$TIZEN" uninstall -p CLNhome001.CleanHome -s "$TARGET"
+  "$TIZEN" uninstall -p CLNhome001 -s "$TARGET"
   install_it || fail "Install failed. Send Claude a screenshot of this window."
 fi
 "$TIZEN" run -p CLNhome001.CleanHome -s "$TARGET" >/dev/null 2>&1
