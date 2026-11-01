@@ -4,7 +4,7 @@
 # Change TV_IP if your TV's address changes.
 TV_IP="${TV_IP:-192.168.0.200}"
 SITE="https://mhnr73-cell.github.io/cleanhome-tv/app/"
-FILES="config.xml index.html loader.js apps.js main.js style.css hdmi.svg icon.png .project .tproject"
+FILES="config.xml index.html loader.js apps.js main.js style.css hdmi.svg icon.png"
 
 TIZEN_HOME="$HOME/tizen-studio"
 SDB="$TIZEN_HOME/tools/sdb"
@@ -33,6 +33,46 @@ mkdir -p "$WORK/CleanHome"
 for f in $FILES; do
   curl -sfL "$SITE$f?v=$(date +%s)" -o "$WORK/CleanHome/$f" || fail "Couldn't download $f. Check the Mac's internet."
 done
+
+# Project files Tizen needs (kept here because the website can't serve hidden files reliably).
+cat > "$WORK/CleanHome/.project" <<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>CleanHome</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>json.validation.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.tizen.web.project.builder.WebBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>json.validation.nature</nature>
+		<nature>org.tizen.web.project.builder.WebNature</nature>
+	</natures>
+</projectDescription>
+XML
+cat > "$WORK/CleanHome/.tproject" <<'XML'
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tproject xmlns="http://www.tizen.org/tproject">
+    <platforms>
+        <platform>
+            <name>tv-samsung-10.0</name>
+        </platform>
+    </platforms>
+    <package>
+        <blacklist/>
+    </package>
+</tproject>
+XML
 
 step "Building Clean Home"
 "$TIZEN" build-web -- "$WORK/CleanHome" >/dev/null || fail "Build failed."
