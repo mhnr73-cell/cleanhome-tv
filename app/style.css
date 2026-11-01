@@ -1,0 +1,82 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; }
+body {
+  background: #07090f;
+  color: #f2f4f8;
+  font-family: "SamsungOne", "Tizen Sans", "Helvetica Neue", Arial, sans-serif;
+  padding: 70px 120px;
+}
+/* Soft coloured glow behind everything */
+#bg {
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: -1;
+  background: -webkit-radial-gradient(15% 0%, circle, rgba(70,90,200,.35) 0, rgba(7,9,15,0) 900px),
+              -webkit-radial-gradient(95% 100%, circle, rgba(200,40,120,.22) 0, rgba(7,9,15,0) 800px),
+              -webkit-linear-gradient(top, #0d1120, #05060a);
+  background: radial-gradient(circle 900px at 15% 0%, rgba(70,90,200,.35), rgba(7,9,15,0)),
+              radial-gradient(circle 800px at 95% 100%, rgba(200,40,120,.22), rgba(7,9,15,0)),
+              linear-gradient(to bottom, #0d1120, #05060a);
+}
+
+header { height: 150px; margin-bottom: 40px; }
+#greeting { font-size: 34px; color: #9aa3b8; letter-spacing: 1px; margin-bottom: 4px; }
+#clock { font-size: 92px; font-weight: 300; margin-right: 28px; }
+#date  { font-size: 34px; color: #9aa3b8; }
+
+#grid { width: 1680px; overflow: visible; }
+.tile {
+  position: relative; float: left; margin: 0 40px 40px 0;
+  height: 250px; border-radius: 28px; overflow: hidden;
+  opacity: .82;
+  -webkit-transform: scale(1); transform: scale(1);
+  -webkit-transition: -webkit-transform .14s ease-out, opacity .14s ease-out, box-shadow .14s;
+  transition: transform .14s ease-out, opacity .14s ease-out, box-shadow .14s;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+}
+/* Glossy highlight across the top of each tile */
+.tile .shine {
+  position: absolute; left: 0; top: 0; right: 0; height: 60%;
+  background: -webkit-linear-gradient(top, rgba(255,255,255,.18), rgba(255,255,255,0));
+  background: linear-gradient(to bottom, rgba(255,255,255,.18), rgba(255,255,255,0));
+}
+.tile .logo {
+  position: absolute; left: 50%; top: 42%;
+  width: 150px; height: 150px; margin: -75px 0 0 -75px;
+  border-radius: 30px; box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+.tile .word {
+  position: absolute; left: 0; right: 0; top: 88px; text-align: center;
+  font-size: 64px; font-weight: 800; letter-spacing: -1px;
+  text-shadow: 0 4px 18px rgba(0,0,0,.35);
+}
+.tile .label {
+  position: absolute; left: 30px; bottom: 22px;
+  font-size: 28px; font-weight: 600; color: rgba(255,255,255,.85);
+}
+.tile.missing { opacity: .3; }
+.tile.focus {
+  opacity: 1; -webkit-transform: scale(1.07); transform: scale(1.07);
+  box-shadow: 0 0 0 6px #fff, 0 24px 60px rgba(0,0,0,.7);
+}
+
+/* HDMI row: shorter tiles with an icon */
+.tile.input { height: 120px; border-radius: 22px; }
+.tile.input .hdmi { position: absolute; left: 34px; top: 40px; width: 64px; height: 40px; opacity: .9; }
+.tile.input .label { left: 124px; bottom: auto; top: 38px; font-size: 36px; }
+
+/* "All apps" list (blue button) */
+.tile.small { height: 120px; }
+.tile.small .logo { width: 80px; height: 80px; margin: 0; left: 20px; top: 20px; border-radius: 18px; }
+.tile.small .word { display: none; }
+.tile.small .label { left: 116px; bottom: auto; top: 42px; font-size: 26px; white-space: nowrap; overflow: hidden; right: 16px; }
+
+footer { position: absolute; left: 120px; bottom: 44px; font-size: 24px; color: #5c6680; }
+#toast {
+  position: absolute; left: 0; right: 0; margin: 0 auto; width: 900px; text-align: center; bottom: 110px;
+  background: rgba(30,34,48,.95); padding: 20px 36px; border-radius: 14px;
+  font-size: 30px; opacity: 0; -webkit-transition: opacity .2s; transition: opacity .2s;
+}
+#toast.show { opacity: 1; }
+
+/* While an HDMI input is showing, hide everything so the picture shows through. */
+body.watching, body.watching #bg { background: transparent; }
+body.watching header, body.watching main, body.watching footer { visibility: hidden; }
